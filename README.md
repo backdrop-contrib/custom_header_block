@@ -14,6 +14,15 @@ Alternatively the default header arrangement can be used. However, this module
 does not display the Account menu. This can of course be added as a separate 
 block.
 
+Screenshots
+-----------
+
+**Slogan on top, Logo on left**
+![Slogan top](/../screenshots/screenshots/slogan-top.PNG?raw=true "Slogan top")
+
+**Slogan on bottom, Logo on right**
+![Slogan bottom flipped](/../screenshots/screenshots/slogan-bottom-flipped.PNG?raw=true "Slogan bottom flipped")
+
 
 Installation
 ------------
