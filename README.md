@@ -1,5 +1,5 @@
 
-CUSTOM HEADER BLOCKS MODULE
+CUSTOM HEADER BLOCK MODULE
 =================
 
 This module provides alternative configurations for site header components. 
