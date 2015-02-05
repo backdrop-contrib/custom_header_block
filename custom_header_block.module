@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * Implements hook_config_info().
+ */
+function custom_header_block_config_info() {
+  $prefixes['custom_header_block.settings'] = array(
+    'label' => t('Custom Header Block settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+
+// hook_block_view_MODULE_DELTA_alter
+function custom_header_block_block_view_system_header_alter(&$data, $block, $settings = array()) {
+    $style = config_get('custom_header_block.settings', 'style');
+    $data['content'] = custom_header_block_header_block($settings, $style);
+}
+
+/**
+ * Output the content for the header block.
+ *
+ * @see system_block_view()
+ */
+function custom_header_block_header_block($settings, $header_style) {
+  $settings += array(
+    'menu' => 'user-menu',
+    'logo' => TRUE,
+    'site_slogan' => TRUE,
+    'site_name' => TRUE,
+  );
+
+  $site_config = config('system.core');
+  $style = config_get('custom_header_block.settings', 'style');
+  
+  $variables['slogan_bottom'] = ($style == 'slogan_bottom_flipped' || $style == 'slogan_bottom')?TRUE:FALSE;
+  $variables['logo']        = $settings['logo'] ? backdrop_get_logo() : NULL;
+  $variables['site_name']   = $settings['site_name'] ? check_plain($site_config->get('site_name')) : '';
+  $variables['site_slogan'] = $settings['site_slogan'] ? filter_xss_admin($site_config->get('site_slogan')) : '';
+  $variables['front_page']  = url();
+
+  return theme($header_style, $variables);
+}
+
+
+function custom_header_block_theme() {
+  return array(
+    'slogan_top' => array(
+      'variables' => array(),
+      'template' => 'templates/custom_header_block', 
+    ),
+    'slogan_bottom' => array(
+      'variables' => array(),
+      'template' => 'templates/custom_header_block', 
+    ),
+    'slogan_top_flipped' => array(
+      'variables' => array(),
+      'template' => 'templates/custom_header_block_flipped', 
+    ),
+    'slogan_bottom_flipped' => array(
+      'variables' => array(),
+      'template' => 'templates/custom_header_block_flipped', 
+    ),
+  );
+}
+
+function custom_header_block_form_layout_block_configure_form_alter(&$form, &$form_state, $form_id) {
+  if(isset($form_state['build_info']['args'][1])) {
+    $legacy= $form_state['build_info']['args'][1];
+     if($legacy->delta == 'header') {
+      $options = array (
+        'header' => 'Default header style',
+        'slogan_top' => 'Inline: [Logo] [Name]. Slogan above',
+        'slogan_bottom' => 'Inline: [Logo] [Name]. Slogan below',
+        'slogan_top_flipped' => 'Inline: [Name] [Logo]. Slogan above',
+        'slogan_bottom_flipped' => 'Inline: [Name] [Logo]. Slogan below',
+      );
+      $form['#submit'][] = 'custom_header_block_settings_save';
+      $form['block_settings']['style'] = array(
+        '#type' => 'radios',
+        '#title' => t('Choose header style'),
+        '#default_value' => config_get('custom_header_block.settings', 'style'),
+        '#options' => $options,
+      );
+    }
+  }
+}
+
+function custom_header_block_settings_save($form, $form_state) {
+  $style = $form_state['values']['block_settings']['style'];
+  config_set('custom_header_block.settings', 'style', $style);
+}

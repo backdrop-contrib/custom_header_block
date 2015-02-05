@@ -1,0 +1,16 @@
+.logo-and-name {
+  display: table;
+}
+
+.logo-and-name.custom-flipped .logo{
+  margin-left: 1em;
+}
+
+.block-system-header .site-name, .block-system-header .logo {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.block-system-header .site-slogan.slogan-bottom {
+  margin-bottom: 7px;
+}

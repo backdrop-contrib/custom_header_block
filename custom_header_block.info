@@ -1,0 +1,7 @@
+name = Custom Header Block
+description = Provides alternative arrangements of Site Name, Logo and Slogan
+package = Blocks 
+
+backdrop = 1.x
+
+stylesheets[all][] = css/custom-header-style.css
