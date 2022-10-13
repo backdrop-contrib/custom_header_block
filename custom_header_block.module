@@ -35,7 +35,7 @@ function custom_header_block_header_block($settings, $header_style) {
   $site_config = config('system.core');
   $style = config_get('custom_header_block.settings', 'style');
   
-  $variables['slogan_bottom']   = ($style == 'slogan_bottom_flipped' || $style == 'slogan_bottom')? TRUE : FALSE;
+  $variables['slogan_bottom']   = ($style == 'slogan_bottom_flipped' || $style == 'slogan_bottom') ? TRUE : FALSE;
   $variables['logo']            = $settings['logo'] ? backdrop_get_logo() : NULL;
   $variables['logo_attributes'] = $settings['logo'] ? array_diff_key(backdrop_get_logo_info(), array('path' => '')) : array();
   $variables['site_name']       = $settings['site_name'] ? check_plain($site_config->get('site_name')) : '';
